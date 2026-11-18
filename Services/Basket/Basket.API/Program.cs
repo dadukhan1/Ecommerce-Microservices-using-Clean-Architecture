@@ -1,6 +1,9 @@
 using Basket.API.Settings;
+using Basket.Application.GrpcService;
 using Basket.Application.Handlers;
+using Basket.Application.Settings;
 using Basket.Core.Repositories;
+using Basket.Grpc.Protos;
 using Basket.Infrastructure.Repositories;
 using Microsoft.Extensions.Options;
 using System.Reflection;
@@ -31,6 +34,21 @@ builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblies(asse
 // Options Pattern
 builder.Services.Configure<CacheSettings>(
     builder.Configuration.GetSection("CacheSettings"));
+
+builder.Services.Configure<GrpcSettings>(
+    builder.Configuration.GetSection("GrpcSettings"));
+
+// Register GRPC Client using IOptions
+builder.Services.AddGrpcClient<DiscountProtoServices.DiscountProtoServicesClient>(
+    (sp, cfg) =>
+    {
+        var grpcSetting = sp.GetRequiredService<IOptions<GrpcSettings>>().Value;
+        cfg.Address = new Uri(grpcSetting.DiscountUrl);
+    });
+
+// GRPC service
+builder.Services.AddScoped<DiscountGrpcService>();
+
 
 // Redis
 builder.Services.AddStackExchangeRedisCache((options) =>

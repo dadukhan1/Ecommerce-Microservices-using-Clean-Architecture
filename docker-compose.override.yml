@@ -22,7 +22,7 @@ services:
     ports:
     - "5432:5432"
     volumes:
-    - postgres_data:/var/lib/postgresql/data/
+    - postgres_data:/var/lib/postgresql/
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U admin"]
       interval: 10s
@@ -52,7 +52,7 @@ services:
   discount:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings__ConnectionString=Server=localhost;Port=5432;Database=DiscountDb;User Id=admin;Password=password"
+      - "DatabaseSettings__ConnectionString=Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=password"
     depends_on:
       - discountdb
     ports:
