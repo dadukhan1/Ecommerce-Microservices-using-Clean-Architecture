@@ -1,0 +1,45 @@
+﻿using Discount.Application.Commands;
+using Discount.Application.DTOs;
+using Discount.Application.Extensions;
+using Discount.Application.Mappers;
+using Discount.Core.Repositories;
+using Grpc.Core;
+using MediatR;
+
+namespace Discount.Application.Handlers
+{
+    public class UpdateDiscountCommandHandler : IRequestHandler<UpdateDiscountCommand, CouponDto>
+    {
+        private readonly IDiscountRepository _discountRepository;
+
+        public UpdateDiscountCommandHandler(IDiscountRepository discountRepository)
+        {
+            _discountRepository = discountRepository;
+        }
+        public async Task<CouponDto> Handle(UpdateDiscountCommand request, CancellationToken cancellationToken)
+        {
+            // Validate the input
+            var validationErrors = new Dictionary<string, string>();
+            if (string.IsNullOrWhiteSpace(request.ProductName))
+                validationErrors["ProductName"] = "Product name must not be empty";
+            if (string.IsNullOrWhiteSpace(request.ProductName))
+                validationErrors["Description"] = "Product Description must not be empty";
+            if (request.Amount <= 0)
+                validationErrors["Amount"] = "Product name must be greater than zero.";
+            if (validationErrors.Any())
+                throw GRPCErrorHelper.CreateValidationException(validationErrors);
+
+            // Convert to Entity
+            var coupon = request.ToEntity();
+
+            // Save to Database
+            var created = await _discountRepository.UpdateDiscount(coupon);
+            if (!created)
+            {
+                throw new RpcException(new Status(StatusCode.Internal, $"Could not create discount for product : {request.ProductName}"));
+            }
+            // Return DTO
+            return coupon.ToDto();
+        }
+    }
+}
