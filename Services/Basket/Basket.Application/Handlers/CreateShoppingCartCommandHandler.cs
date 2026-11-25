@@ -26,11 +26,11 @@ namespace Basket.Application.Handlers
                 item.Price -= coupon.Amount;
             }
             // Convert commmand to domain entity
-            var shoppingCartEntity = request.ToEntity();
+            var shoppingCartEntity = request.ToShoppingCartEntity();
             // Save to redis
             var updatedCart = await _basketRepsitory.UpsertBasket(shoppingCartEntity);
             // Convert back to response
-            return updatedCart.ToResponse();    
+            return updatedCart.ToShoppingCartResponse();    
         }
     }
 }

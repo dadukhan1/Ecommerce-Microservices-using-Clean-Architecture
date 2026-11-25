@@ -25,7 +25,7 @@ namespace Basket.Application.Handlers
                     Items = new List<ShoppingCartItemResponse>()
                 };
             }
-            return shoppingCart.ToResponse();
+            return shoppingCart.ToShoppingCartResponse();
         }
     }
 }
