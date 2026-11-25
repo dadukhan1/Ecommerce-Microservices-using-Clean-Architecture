@@ -44,6 +44,12 @@
         interval: 10s
         timeout: 10s
         retries: 5
+    rabbitmq:
+      container_name: rabbitmq
+      restart: always
+      ports:
+        - "5672:5672"
+        - "15672:15672"
   
     catalog:
       environment:
@@ -61,18 +67,29 @@
       environment:
         - ASPNETCORE_ENVIRONMENT=Development
         - "CacheSettings__ConnectionString=basketdb:6379"
+        - "GrpcSettings__DiscountUrl=http://discount:8080"
+        - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672/"
       depends_on:
         - basketdb
+        - rabbitmq
       ports:
-        - "8081:8080"
+        - "8001:8080"
     discount:
       environment:
         - ASPNETCORE_ENVIRONMENT=Development
         - "DatabaseSettings__ConnectionString=Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=password"
+        - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672/"
       depends_on:
         - discountdb
+        - rabbitmq
       ports:
         - "8002:8080"
     ordering:
+      environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672/
+      depends_on:
+        - orderdb
+        - rabbitmq
       ports:
-        - "8004:8080"
+        - "8003:8080"

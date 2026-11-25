@@ -5,6 +5,7 @@ using Basket.Application.Settings;
 using Basket.Core.Repositories;
 using Basket.Grpc.Protos;
 using Basket.Infrastructure.Repositories;
+using MassTransit;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
@@ -55,6 +56,15 @@ builder.Services.AddStackExchangeRedisCache((options) =>
 {
     options.Configuration = builder.Configuration.GetSection("CacheSettings")
                                                 .GetValue<string>("ConnectionString");
+});
+
+// Add mass transit
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((ct, cfg) =>
+    {
+        cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+    });
 });
 
 

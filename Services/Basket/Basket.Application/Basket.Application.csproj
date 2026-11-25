@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\Infrastructure\EventBus.Messages\EventBus.Messages.csproj" />
 		<ProjectReference Include="..\Basket.Core\Basket.Core.csproj" />
 	</ItemGroup>
 
@@ -14,13 +15,15 @@
 		<PackageReference Include="Grpc.AspNetCore" Version="2.85.0" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.85.0" />
 		<PackageReference Include="Grpc.Tools" Version="2.85.0">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="MassTransit" Version="8.5.2" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.5.2" />
 		<PackageReference Include="MediatR" Version="14.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Protobuf Include="Protos\Discount.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\Discount.proto" GrpcServices="Client" />
 	</ItemGroup>
 </Project>

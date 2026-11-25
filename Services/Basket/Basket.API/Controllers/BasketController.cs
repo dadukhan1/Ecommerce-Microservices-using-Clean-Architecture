@@ -42,6 +42,14 @@ namespace Basket.API.Controllers
             var cmd = new DeleteBasketByUserNameCommand(userName);
             await _mediator.Send(userName);
             return Ok();
-        } 
+        }
+
+        // Checkout
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Checkout([FromBody] BasketCheckoutDto dto)
+        {
+            await _mediator.Send(new BasketCheckoutCommand(dto));
+            return Accepted();
+        }
     }
 }
