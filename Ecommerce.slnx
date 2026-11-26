@@ -27,6 +27,9 @@
     <Project Path="Services/Ordering/Ordering.Core/Ordering.Core.csproj" Id="4ac76043-57f8-4a9a-a347-e0c190b04e1e" />
     <Project Path="Services/Ordering/Ordering.Infrastructure/Ordering.Infrastructure.csproj" Id="5e43fb5c-d724-4750-910d-14fc7a27a4f6" />
   </Folder>
+  <Folder Name="/Services/Payment/">
+    <Project Path="Services/Payment/Payment/Payment.csproj" Id="dd283433-3e5d-45fc-977a-d4e13abfe339" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
