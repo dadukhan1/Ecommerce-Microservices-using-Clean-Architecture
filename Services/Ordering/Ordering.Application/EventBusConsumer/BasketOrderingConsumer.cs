@@ -22,7 +22,6 @@ namespace Ordering.Application.EventBusConsumer
             using var scope = _logger.BeginScope("Consuming Basket Checkout Event for {CorrelationId}", context.Message.CorrelationId);
             var command = context.Message.ToCheckoutOrderCommand();
             var orderId = await _createOrderHandler.Handle(command, context.CancellationToken);
-
             _logger.LogInformation("Basket Checkout Event Completed Successfully! OrderId: {OrderId}", orderId);
         }
     }

@@ -22,7 +22,7 @@ namespace Ordering.Infrastructure.Data
                 builder.Property(x => x.Type).IsRequired();
                 builder.Property(x => x.Content).IsRequired();
                 builder.Property(x => x.OccurredOn).IsRequired();
-                builder.Property(x => x.ProcessedOn).IsRequired();
+                builder.Property(x => x.ProcessedOn).IsRequired(false);
             });
             modelBuilder.Entity<Order>().
                 Property(o => o.Status).
